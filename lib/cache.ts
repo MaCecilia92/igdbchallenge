@@ -1,3 +1,5 @@
+import { validateEnv } from './env';
+
 export type Game = {
   id: number
   name: string
@@ -9,15 +11,17 @@ export type Game = {
 
 export async function fetchGames(): Promise<Game[]> {
   try {
+    validateEnv();
+
     const response = await fetch('https://api.igdb.com/v4/games', {
       method: 'POST',
       headers: {
-        'Client-ID': '2q31jvn4mam0d7p7p4jrxwfen2ti6f',
-        'Authorization': `Bearer zvd03dk30clrziqkd4clzljih906bp`,
+        'Client-ID': process.env.IGDB_CLIENT_ID!,
+        'Authorization': `Bearer ${process.env.IGDB_ACCESS_TOKEN}`,
         'Accept': 'application/json',
       },
       body: 'fields name,summary,cover.url, genres; limit 100;',
-      next: { revalidate: 20 }
+      next: { revalidate: 10 }
     })
 
     if (!response.ok) {
