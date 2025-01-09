@@ -37,7 +37,7 @@ export default function Search() {
     }
   }
 
-  const handleSelectGame = (gameId: number, gameName: string) => {
+  const handleSelectGame = (gameId: number) => {
     router.push(`/game/${gameId}`)
     setQuery('')
     setSuggestions([])
@@ -98,7 +98,7 @@ const PLACEHOLDER_IMAGE = 'https://i.postimg.cc/QdMFWYLw/stock-vector-retro-pixe
               <li 
                 key={game.id} 
                 className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
-                onClick={() => handleSelectGame(game.id, game.name)}
+                onClick={() => handleSelectGame(game.id)}
               >
                   <Image
                   src={game.cover ? `https:${game.cover.url.replace('t_thumb', 't_cover_big')}`: PLACEHOLDER_IMAGE}

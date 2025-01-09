@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
-import { fetchGames, Game } from '@/lib/cache'
+import { fetchGames } from '@/lib/cache'
 import FavoriteButton from '@/components/FavoriteButton'
 
 type Props = {
@@ -34,7 +34,6 @@ export default async function GamePage({ params }: Props) {
   const games = await fetchGames()
   const game = games.find(g => g.id.toString() === params.id)
 
-  console.log(game, 'page.tsx')
   if (!game) {
     return <div className="container mx-auto px-4 py-8">Game not found</div>
   }

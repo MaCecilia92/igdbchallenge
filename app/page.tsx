@@ -26,8 +26,6 @@ export default function Home() {
     return <Loading />
   }
 
-  const displayedGames = searchResults.length > 0 ? searchResults : initialGames
-
   return (
     <div>
       {searchResults.length > 0 ? (
