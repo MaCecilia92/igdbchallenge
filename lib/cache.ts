@@ -20,7 +20,7 @@ export async function fetchGames(): Promise<Game[]> {
         'Authorization': `Bearer ${process.env.IGDB_ACCESS_TOKEN}`,
         'Accept': 'application/json',
       },
-      body: 'fields name,summary,cover.url, genres; limit 100;',
+      body: 'fields name,summary,cover.url, genres; limit 200;',
       next: { revalidate: 10 }
     })
 

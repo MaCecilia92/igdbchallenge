@@ -1,47 +1,46 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
+import FavoriteGames from '@/components/FavoriteGames'
 import GameGrid from '@/components/GameGrid'
+import GameGridSkeleton from '@/components/GameGridSkeleton'
 import { getInitialGames } from './actions'
 import { Game } from '@/lib/cache'
-import { useSearch } from './searchContext'
-import Loading from '@/components/Loading'
-import FavoriteGames from '@/components/FavoriteGames'
+import { motion } from 'framer-motion'
 
 export default function Home() {
   const [initialGames, setInitialGames] = useState<Game[]>([])
-  const [initialGamesLoaded, setInitialGamesLoaded] = useState(false)
-  const { searchResults } = useSearch()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    if (!initialGamesLoaded) {
-      getInitialGames().then((fetchedGames) => {
-        setInitialGames(fetchedGames)
-        setInitialGamesLoaded(true)
-      })
+    const fetchGames = async () => {
+      const games = await getInitialGames()
+      setInitialGames(games)
+      setIsLoading(false)
     }
-  }, [initialGamesLoaded])
-
-  if (!initialGamesLoaded) {
-    return <Loading />
-  }
+    fetchGames()
+  }, [])
 
   return (
-    <div>
-      {searchResults.length > 0 ? (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Resultados de la búsqueda</h2>
-          <GameGrid games={searchResults} />
+    <div className="container mx-auto px-4 py-8">
+      <motion.div 
+        className="max-w-2xl mx-auto text-center mb-12 p-8 bg-white rounded-lg shadow-lg relative overflow-hidden"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="absolute inset-0 bg-blue-100 opacity-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-200 to-blue-300 opacity-50"></div>
+        <div className="relative z-10">
+          <h1 className="text-4xl font-bold mb-4 text-gray-800">IGDB Games</h1>
+          <p className="text-lg mb-8 text-gray-600">
+            Busca tus juegos favoritos usando la barra de búsqueda arriba.
+          </p>
         </div>
-      ) : (
-        <>
-          <h1 className="text-4xl font-bold mb-8">IGDB Games</h1>
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-4">Juegos Populares</h2>
-            <GameGrid games={initialGames} />
-          </div>
-        </>
-      )}
+      </motion.div>
+      
+      {isLoading ? <GameGridSkeleton /> : <GameGrid games={initialGames} />}
+      
       <div className="mt-12">
         <FavoriteGames />
       </div>
