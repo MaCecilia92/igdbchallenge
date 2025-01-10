@@ -5,7 +5,6 @@ import { Game as GameType } from '@/lib/cache'
 const PLACEHOLDER_IMAGE = 'https://i.postimg.cc/QdMFWYLw/stock-vector-retro-pixel-game-console-with-placeholder-text-on-screen-2546836525.jpg'
 
 export function Game({ game }: { game: GameType }) {
-  console.log(game, 'Game.tsx')
   return (
     <Link href={`/game/${game.id}`} prefetch={false}>
       <div className="border rounded-lg p-4 hover:shadow-lg transition-shadow">

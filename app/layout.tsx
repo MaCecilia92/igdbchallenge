@@ -33,7 +33,16 @@ export default function RootLayout({
             </main>
           </SearchProvider>
         </FavoritesProvider>
-        <Toaster position="top-right" />
+        <Toaster 
+          position='bottom-center'
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: '#333',
+              color: '#fff',
+            },
+          }}
+        />
       </body>
     </html>
   )

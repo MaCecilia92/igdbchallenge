@@ -1,3 +1,5 @@
+'use client'
+
 import { motion } from 'framer-motion'
 
 const containerVariants = {
@@ -21,15 +23,15 @@ const itemVariants = {
 export default function GameGridSkeleton() {
   return (
     <motion.div 
-      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4"
+      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       {[...Array(12)].map((_, index) => (
-        <motion.div key={index} className="relative group" variants={itemVariants}>
-          <div className="aspect-[3/4] relative rounded-lg overflow-hidden bg-gray-200 animate-pulse">
-            <div className="absolute bottom-2 left-2 right-2 h-4 bg-gray-300 rounded"></div>
+        <motion.div key={index} className="relative" variants={itemVariants}>
+          <div className="aspect-[3/4] bg-gray-200 rounded-lg animate-pulse">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-300" />
           </div>
         </motion.div>
       ))}
