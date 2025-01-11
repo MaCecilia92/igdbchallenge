@@ -73,7 +73,7 @@ export default function Search({ show = true }: { show?: boolean }) {
   }
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center space-x-4 p-4 sm:p-6 md:p-8 max-w-7xl mx-auto w-full">
       {pathname === "/" ? (
         <Link href="/" aria-label="Go to home page">
           <Image
