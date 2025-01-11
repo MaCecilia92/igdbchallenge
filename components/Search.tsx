@@ -23,10 +23,6 @@ export default function Search({ show = true }: { show?: boolean }) {
   const searchRef = useRef<HTMLDivElement>(null);
   const { setSearchResults } = useSearch();
 
-  if (!show) {
-    return null;
-  }
-
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = e.target.value;
     setQuery(newQuery);
@@ -43,7 +39,7 @@ export default function Search({ show = true }: { show?: boolean }) {
     }
   };
 
-  const handleSelectGame = (gameId: number, gameName: string) => {
+  const handleSelectGame = (gameId: number) => {
     router.push(`/game/${gameId}`);
     setQuery("");
     setSuggestions([]);
@@ -51,6 +47,8 @@ export default function Search({ show = true }: { show?: boolean }) {
   };
 
   useEffect(() => {
+    if (!show) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       if (
         searchRef.current &&
@@ -68,7 +66,11 @@ export default function Search({ show = true }: { show?: boolean }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [pathname, setSearchResults]);
+  }, [pathname, setSearchResults, show]);
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <div className="flex items-center space-x-4">
@@ -132,7 +134,7 @@ export default function Search({ show = true }: { show?: boolean }) {
               <li
                 key={game.id}
                 className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
-                onClick={() => handleSelectGame(game.id, game.name)}
+                onClick={() => handleSelectGame(game.id)}
               >
                 <Image
                   src={
