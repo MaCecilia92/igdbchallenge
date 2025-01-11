@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import { getInitialGames } from './actions'
+import { getInitialGames } from '../actions'
 
 const GameGrid = dynamic(() => import('@/components/GameGrid'), { ssr: false })
 const GameGridSkeleton = dynamic(() => import('@/components/GameGridSkeleton'), { ssr: false })

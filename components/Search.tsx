@@ -8,13 +8,13 @@ import { Game } from "@/lib/cache";
 import { useSearch } from "@/app/searchContext";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, SearchIcon } from "lucide-react";
+import { ChevronLeft, SearchIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const PLACEHOLDER_IMAGE =
   "https://i.postimg.cc/QdMFWYLw/stock-vector-retro-pixel-game-console-with-placeholder-text-on-screen-2546836525.jpg";
 
-export default function Search() {
+export default function Search({ show = true }: { show?: boolean }) {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Game[]>([]);
   const [isPending, startTransition] = useTransition();
@@ -22,6 +22,10 @@ export default function Search() {
   const pathname = usePathname();
   const searchRef = useRef<HTMLDivElement>(null);
   const { setSearchResults } = useSearch();
+
+  if (!show) {
+    return null;
+  }
 
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = e.target.value;
@@ -39,7 +43,7 @@ export default function Search() {
     }
   };
 
-  const handleSelectGame = (gameId: number) => {
+  const handleSelectGame = (gameId: number, gameName: string) => {
     router.push(`/game/${gameId}`);
     setQuery("");
     setSuggestions([]);
@@ -128,7 +132,7 @@ export default function Search() {
               <li
                 key={game.id}
                 className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
-                onClick={() => handleSelectGame(game.id)}
+                onClick={() => handleSelectGame(game.id, game.name)}
               >
                 <Image
                   src={

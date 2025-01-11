@@ -2,7 +2,6 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
-import Search from '@/components/Search'
 import { SearchProvider } from './searchContext'
 import { FavoritesProvider } from '@/contexts/FavoritesContext'
 
@@ -23,18 +22,13 @@ export default function RootLayout({
       <body className={inter.className}>
         <FavoritesProvider>
           <SearchProvider>
-            <div className="sticky top-0 bg-white z-30 shadow-md mb-8">
-              <div className="container mx-auto px-4 py-4">
-                <Search />
-              </div>
-            </div>
             <main>
               {children}
             </main>
           </SearchProvider>
         </FavoritesProvider>
         <Toaster 
-          position='bottom-center'
+          position="top-center"
           toastOptions={{
             duration: 3000,
             style: {
