@@ -23,6 +23,10 @@ export default function Search({ show = true }: { show?: boolean }) {
   const searchRef = useRef<HTMLDivElement>(null);
   const { setSearchResults } = useSearch();
 
+  if (!show) {
+    return null;
+  }
+
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = e.target.value;
     setQuery(newQuery);
@@ -47,8 +51,6 @@ export default function Search({ show = true }: { show?: boolean }) {
   };
 
   useEffect(() => {
-    if (!show) return;
-
     const handleClickOutside = (event: MouseEvent) => {
       if (
         searchRef.current &&
@@ -66,14 +68,10 @@ export default function Search({ show = true }: { show?: boolean }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [pathname, setSearchResults, show]);
-
-  if (!show) {
-    return null;
-  }
+  }, [pathname, setSearchResults]);
 
   return (
-    <div className="flex items-center space-x-4 p-4 sm:p-6 md:p-8 max-w-7xl mx-auto w-full">
+    <div className="flex items-center space-x-4 relative my-4 mx-auto max-w-3xl w-full px-4">
       {pathname === "/" ? (
         <Link href="/" aria-label="Go to home page">
           <Image
@@ -105,19 +103,19 @@ export default function Search({ show = true }: { show?: boolean }) {
           </Link>
         </>
       )}
-      <div className="relative flex-grow" ref={searchRef}>
+      <div className="relative flex-grow w-full" ref={searchRef}>
         <Input
           type="text"
           value={query}
           onChange={handleSearch}
           placeholder="Buscar juegos..."
-          className="w-full pl-10"
+          className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
           aria-label="Buscar juegos"
           aria-autocomplete="list"
           aria-controls="search-results"
         />
         <SearchIcon
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
           size={18}
         />
         {isPending && (
@@ -128,12 +126,12 @@ export default function Search({ show = true }: { show?: boolean }) {
         {suggestions.length > 0 && (
           <ul
             id="search-results"
-            className="absolute z-10 w-full bg-white border rounded-lg shadow-lg mt-1 max-h-80 overflow-auto"
+            className="absolute z-50 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-80 overflow-auto"
           >
             {suggestions.map((game) => (
               <li
                 key={game.id}
-                className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                className="p-2 hover:bg-gray-100 cursor-pointer flex items-center border-b last:border-b-0"
                 onClick={() => handleSelectGame(game.id)}
               >
                 <Image
@@ -150,11 +148,11 @@ export default function Search({ show = true }: { show?: boolean }) {
                   height={35}
                   className="rounded mr-2"
                 />
-                <span>{game.name}</span>
+                <span className="text-sm">{game.name}</span>
               </li>
             ))}
-            <li className="p-2 hover:bg-gray-100 cursor-pointer text-blue-600">
-              <Link href={`/search?q=${encodeURIComponent(query)}`}>
+            <li className="p-2 hover:bg-gray-100 cursor-pointer text-blue-600 text-center">
+              <Link href={`/search?q=${encodeURIComponent(query)}`} className="text-sm font-medium">
                 Ver todos los resultados
               </Link>
             </li>
